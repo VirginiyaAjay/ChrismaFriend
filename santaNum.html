@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Santa Matching</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .numbers {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .number-button {
+            font-size: 24px;
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .number-button:disabled {
+            background-color: #dcdcdc;
+            cursor: not-allowed;
+        }
+        .name-display {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Click a number to see your Santa name</h1>
+    
+    <!-- Numbers 1 to 8 -->
+    <div class="numbers" id="numbersContainer"></div>
+    
+    <!-- Display Name -->
+    <div class="name-display" id="nameDisplay"></div>
+
+    <script>
+        // Hardcoded names
+        const names = [
+            "Ajay", "Virginiya", "Kennedy", "Sophiya", 
+            "Xavier", "Santhi", "Christopher", "Keziah"
+        ];
+
+        // Function to initialize and display clickable numbers
+        function initializeNumbers() {
+            const numbersContainer = document.getElementById('numbersContainer');
+            numbersContainer.innerHTML = ''; // Clear any existing buttons
+
+            for (let i = 0; i < 8; i++) {
+                const button = document.createElement('button');
+                button.classList.add('number-button');
+                button.textContent = i + 1;
+                button.disabled = sessionStorage.getItem(`clicked_${i}`); // Disable if already clicked
+                button.onclick = () => displayName(i);
+                numbersContainer.appendChild(button);
+            }
+        }
+
+        // Function to display the name for the selected number
+        function displayName(index) {
+            const selectedName = names[index];
+
+            // Display the name
+            const nameDisplay = document.getElementById('nameDisplay');
+            nameDisplay.textContent = `Name: ${selectedName}`;
+
+            // Mark the number as clicked and disable it
+            sessionStorage.setItem(`clicked_${index}`, 'true');
+            initializeNumbers(); // Re-initialize numbers to reflect the updated state
+        }
+
+        // Initialize the page on load
+        window.onload = function() {
+            initializeNumbers();
+        };
+    </script>
+
+</body>
+</html>
